@@ -34,6 +34,14 @@ public class TreatmentRecord {
     public String getDoctorName() {
         return doctorName;
     }
-}
 
+    @Override
+    public String toString() {
+
+        return "Patient ID: " + patientId +
+                ", Patient: " + patientName +
+                ", Doctor: " + doctorName +
+                ", Treatment: " + treatment;
+    }
+}
 
