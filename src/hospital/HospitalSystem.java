@@ -1,6 +1,7 @@
 package hospital;
 
 
+
 import java.util.Scanner;
 
 public class HospitalSystem {
@@ -8,8 +9,15 @@ public class HospitalSystem {
     static Scanner scanner = new Scanner(System.in);
 
     static PatientBST patientBST = new PatientBST();
-    static EmergencyQueue emergencyQueue = new EmergencyQueue();
-    static TreatmentStack treatmentStack = new TreatmentStack();
+
+    static EmergencyQueue emergencyQueue =
+            new EmergencyQueue();
+
+    static TreatmentStack treatmentStack =
+            new TreatmentStack();
+
+    static VisitHistory visitHistory =
+            new VisitHistory();
 
     public static void main(String[] args) {
 
@@ -34,6 +42,11 @@ public class HospitalSystem {
             System.out.println("8. Add Treatment Record");
             System.out.println("9. Remove Last Treatment");
             System.out.println("10. Display Treatment History");
+
+            System.out.println("11. Add Patient Visit");
+            System.out.println("12. Search Visit");
+            System.out.println("13. Remove Visit");
+            System.out.println("14. Display Visit History");
 
             System.out.println("0. Exit");
 
@@ -65,19 +78,7 @@ public class HospitalSystem {
                     break;
 
                 case 6:
-
-                    Patient patient =
-                            emergencyQueue.dequeue();
-
-                    if (patient != null) {
-
-                        System.out.println(
-                                "Treating patient:"
-                        );
-
-                        System.out.println(patient);
-                    }
-
+                    treatNextPatient();
                     break;
 
                 case 7:
@@ -89,11 +90,27 @@ public class HospitalSystem {
                     break;
 
                 case 9:
-                    treatmentStack.pop();
+                    removeLastTreatment();
                     break;
 
                 case 10:
                     treatmentStack.display();
+                    break;
+
+                case 11:
+                    addVisit();
+                    break;
+
+                case 12:
+                    searchVisit();
+                    break;
+
+                case 13:
+                    removeVisit();
+                    break;
+
+                case 14:
+                    visitHistory.displayHistory();
                     break;
 
                 case 0:
@@ -114,21 +131,30 @@ public class HospitalSystem {
     static void registerPatient() {
 
         System.out.print("Patient ID: ");
+
         int id = scanner.nextInt();
         scanner.nextLine();
 
         System.out.print("Patient Name: ");
-        String name = scanner.nextLine();
+
+        String name =
+                scanner.nextLine();
 
         System.out.print("Age: ");
-        int age = scanner.nextInt();
+
+        int age =
+                scanner.nextInt();
         scanner.nextLine();
 
         System.out.print("Contact Number: ");
-        String contact = scanner.nextLine();
+
+        String contact =
+                scanner.nextLine();
 
         System.out.print("Medical Condition: ");
-        String condition = scanner.nextLine();
+
+        String condition =
+                scanner.nextLine();
 
         Patient patient =
                 new Patient(
@@ -150,7 +176,8 @@ public class HospitalSystem {
 
         System.out.print("Enter Patient ID: ");
 
-        int id = scanner.nextInt();
+        int id =
+                scanner.nextInt();
 
         Patient patient =
                 patientBST.search(id);
@@ -171,7 +198,8 @@ public class HospitalSystem {
 
         System.out.print("Enter Patient ID: ");
 
-        int id = scanner.nextInt();
+        int id =
+                scanner.nextInt();
 
         patientBST.delete(id);
 
@@ -184,7 +212,8 @@ public class HospitalSystem {
 
         System.out.print("Enter Patient ID: ");
 
-        int id = scanner.nextInt();
+        int id =
+                scanner.nextInt();
 
         Patient patient =
                 patientBST.search(id);
@@ -205,11 +234,27 @@ public class HospitalSystem {
         );
     }
 
+    static void treatNextPatient() {
+
+        Patient patient =
+                emergencyQueue.dequeue();
+
+        if (patient != null) {
+
+            System.out.println(
+                    "Treating patient:"
+            );
+
+            System.out.println(patient);
+        }
+    }
+
     static void addTreatment() {
 
         System.out.print("Patient ID: ");
 
-        int id = scanner.nextInt();
+        int id =
+                scanner.nextInt();
         scanner.nextLine();
 
         Patient patient =
@@ -246,6 +291,101 @@ public class HospitalSystem {
 
         System.out.println(
                 "Treatment record added."
+        );
+    }
+
+    static void removeLastTreatment() {
+
+        TreatmentRecord record =
+                treatmentStack.pop();
+
+        if (record != null) {
+
+            System.out.println(
+                    "Removed treatment:"
+            );
+
+            System.out.println(record);
+        }
+    }
+
+    static void addVisit() {
+
+        System.out.print("Visit ID: ");
+
+        int visitId =
+                scanner.nextInt();
+        scanner.nextLine();
+
+        System.out.print("Visit Date: ");
+
+        String date =
+                scanner.nextLine();
+
+        System.out.print("Doctor Name: ");
+
+        String doctor =
+                scanner.nextLine();
+
+        System.out.print("Diagnosis: ");
+
+        String diagnosis =
+                scanner.nextLine();
+
+        System.out.print("Treatment: ");
+
+        String treatment =
+                scanner.nextLine();
+
+        Visit visit =
+                new Visit(
+                        visitId,
+                        date,
+                        doctor,
+                        diagnosis,
+                        treatment
+                );
+
+        visitHistory.addVisit(visit);
+
+        System.out.println(
+                "Visit added successfully."
+        );
+    }
+
+    static void searchVisit() {
+
+        System.out.print("Visit ID: ");
+
+        int id =
+                scanner.nextInt();
+
+        Visit visit =
+                visitHistory.searchVisit(id);
+
+        if (visit != null) {
+
+            System.out.println(visit);
+
+        } else {
+
+            System.out.println(
+                    "Visit not found."
+            );
+        }
+    }
+
+    static void removeVisit() {
+
+        System.out.print("Visit ID: ");
+
+        int id =
+                scanner.nextInt();
+
+        visitHistory.removeVisit(id);
+
+        System.out.println(
+                "Remove operation completed."
         );
     }
 }
